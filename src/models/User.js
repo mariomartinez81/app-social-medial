@@ -13,6 +13,7 @@ const UserSchema = new Schema(
     email: {
       type: String,
     },
+    createdAt: String,
   },
   { versionKey: false, timestamps: true }
 );
