@@ -1,37 +1,55 @@
 const User = require('../../models/User');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../../config');
+const { UserInputError } = require('apollo-server');
 
 module.exports = {
+  Query: {
+    getUsers: async () => {
+      try {
+        const allUsers = await User.find();
+        return allUsers;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  },
+
   Mutation: {
     register: async (parent, args, contex, info) => {
       //TODO: validate user data
       //TODO: Make sure user does already exist
       //TODO: hash password and created an auth token
       const { username, email, password, confirmPassword } = args.registerInput;
-      password = await bcrypt.hash(password, 10);
+
+      // const user = User.findOne({ username: username });
+      // if (user) {
+      //   throw new UserInputError('Username is taken', {
+      //     erros: {
+      //       username: 'This username is taken',
+      //     },
+      //   });
+      // }
 
       const newUser = new User({
         username,
         email,
-        password,
-        confirmPassword,
+        password: await User.encryptPassword(password),
         createdAt: new Date().toISOString(),
       });
-      const res = await newUser.save();
+      const newUserSaved = await newUser.save();
       const token = jwt.sign(
         {
-          id: res.id,
-          email: res.email,
-          username: res.username,
+          id: newUserSaved.id,
+          email: newUserSaved.email,
+          username: newUserSaved.username,
         },
         SECRET_KEY,
         { expiresIn: '1h' }
       );
       return {
-        ...res._doc,
-        id: res._id,
+        ...newUserSaved._doc,
+        id: newUserSaved._id,
         token,
       };
     },

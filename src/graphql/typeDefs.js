@@ -1,8 +1,7 @@
-const gql = require('graphql-tag');
-const Post = require('../models/Post');
-const User = require('../models/User');
+const { gql } = require('apollo-server');
+// const gql = require('graphql-tag');
 
-const typeDefs = gql`
+module.exports = gql`
   type Post {
     id: ID!
     body: String!
@@ -18,8 +17,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    sayHi: String! # !  meaning is a required in graphql
     getPosts: [Post]
+    getUsers: [User]
   }
 
   input RegisterInput {
@@ -32,5 +31,3 @@ const typeDefs = gql`
     register(registerInput: RegisterInput): User!
   }
 `;
-
-module.exports = typeDefs;
