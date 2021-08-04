@@ -1,10 +1,7 @@
-const Post = require('./models/Post');
-const User = require('./models/User');
+const Post = require('../../models/Post');
 
-const resolvers = {
+module.exports = {
   Query: {
-    sayHi: () => 'Hello World ',
-
     getPosts: async () => {
       try {
         const allPosts = await Post.find();
@@ -15,5 +12,3 @@ const resolvers = {
     },
   },
 };
-
-module.exports = resolvers;
