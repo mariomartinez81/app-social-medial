@@ -17,5 +17,5 @@ mongoose.connect(`mongodb://localhost:27017/merng_db`, {
 console.log('Mongoose and DB connected');
 
 server
-  .listen({ port: 5000 })
+  .listen({ port: 4000 })
   .then((res) => console.log(`Server runnig ar ${res.url}`));
