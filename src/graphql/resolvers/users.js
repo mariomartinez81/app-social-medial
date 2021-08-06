@@ -37,7 +37,7 @@ module.exports = {
         throw new UserInputError('Errors', { errors });
       }
 
-      const findUser = User.findOne({ username });
+      const findUser = await User.findOne({ username });
       if (!findUser) {
         errors.general = 'User not found';
         throw new UserInputError('User not found', { errors });
@@ -101,5 +101,7 @@ module.exports = {
         token,
       };
     },
+
+    createPost: async () => {},
   },
 };
