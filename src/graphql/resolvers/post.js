@@ -57,5 +57,15 @@ module.exports = {
         throw new Error(error);
       }
     },
+
+    likePost: async (_, { postId, context }) => {
+      const { username } = checkAuth(context);
+      const post = await Post.findById(postId);
+
+      if (post) {
+        if (post.likes.find((like) => like.username === username)) {
+        }
+      }
+    },
   },
 };
